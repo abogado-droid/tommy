@@ -4,14 +4,74 @@ use std::io::{BufRead, BufReader};
 #[derive(Debug, Clone)]
 pub enum Value {
     String(String),
+    Char(char),
     Integer(i32),
     Float(f64),
     Boolean(bool),
 }
 
+impl Value {
+    pub fn as_string(&self) -> Option<&str> {
+        if let Value::String(s) = self {
+            Some(s)
+        } else {
+            None
+        }
+    }
+
+    pub fn as_i32(&self) -> Option<i32> {
+        if let Value::Integer(i) = self {
+            Some(*i)
+        } else {
+            None
+        }
+    }
+
+    pub fn as_f64(&self) -> Option<f64> {
+        if let Value::Float(f) = self {
+            Some(*f)
+        } else {
+            None
+        }
+    }
+
+    pub fn as_bool(&self) -> Option<bool> {
+        if let Value::Boolean(b) = self {
+            Some(*b)
+        } else {
+            None
+        }
+    }
+
+    pub fn as_char(&self) -> Option<char> {
+        if let Value::Char(c) = self {
+            Some(*c)
+        } else {
+            None
+        }
+    }
+}
+
+#[derive(Clone)]
 struct Table {
     name: String,
     fields: Vec<(String, Value)>, // field name, field contents
+}
+
+#[allow(unused)]
+impl Table {
+    pub fn get(&self, key: &str) -> Option<&Value> {
+        self.fields
+            .iter()
+            .find_map(|(k, v)| if k == key { Some(v) } else { None })
+    }
+
+    pub fn get_as<T>(&self) -> T
+where
+        T: for<'a> From<&'a Table>,
+    {
+        T::from(self)
+    }
 }
 
 pub struct ParseConfig {
@@ -31,14 +91,16 @@ impl ParseConfig {
             panic!("error whilst deriving tables: {}", e);
         }
 
-        for table in &parser.table_l {
-            println!("Table: {}", table.name);
-            for (k, v) in &table.fields {
-                println!("  {} = {:?}", k, v);
-            }
-        }
-
         parser
+    }
+    pub fn table<T>(&self, name: &str) -> Option<T>
+where
+        T: FromTable,
+    {
+        self.table_l
+            .iter()
+            .find(|t| t.name == name)
+            .map(T::from_table)
     }
 
     fn derive_tables(&mut self) -> std::io::Result<()> {
@@ -74,9 +136,10 @@ impl ParseConfig {
                 continue;
             }
 
-            if let Some(eq_idx) = line.find('=') {
-                let key = line[..eq_idx].trim();
-                let value = line[eq_idx + 1..].trim();
+            // assign key-value pairs
+            if let Some(eq) = line.find('=') {
+                let key = line[..eq].trim();
+                let value = line[eq + 1..].trim();
 
                 if let Some(table) = table_c.as_mut() {
                     let parsed_value = value
@@ -90,6 +153,17 @@ impl ParseConfig {
                         })
                         .or_else(|| {
                             value.parse::<f64>().ok().map(Value::Float)
+                        })
+                        .or_else(|| {
+                            if value.len() == 1 {
+                                Some(Value::Char(
+                                    value.chars()
+                                        .next()
+                                        .unwrap(),
+                                ))
+                            } else {
+                                None
+                            }
                         })
                         .unwrap_or_else(|| {
                             Value::String(value.to_string())
@@ -112,12 +186,87 @@ impl ParseConfig {
     }
 }
 
+#[allow(unused_macros)]
+macro_rules! from_table_struct {
+    ($struct_name:ident { $($field:ident: $type:ty),* $(,)? }) => {
+        impl FromTable for $struct_name {
+        fn from_table(table: &Table) -> Self {
+        $struct_name {
+        $(
+        $field: {
+        let v = table.get(stringify!($field))
+        .expect(&format!("Missing key: {}", stringify!($field)));
+        // call the correct accessor based on the type
+        <$type>::from_value(v)
+        },
+        )*
+        }
+        }
+        }
+    };
+}
+
+pub trait FromValue: Sized {
+    fn from_value(v: &Value) -> Self;
+}
+
+impl FromValue for String {
+    fn from_value(v: &Value) -> Self {
+        v.as_string().unwrap().to_string()
+    }
+}
+impl FromValue for i32 {
+    fn from_value(v: &Value) -> Self {
+        v.as_i32().unwrap()
+    }
+}
+impl FromValue for f64 {
+    fn from_value(v: &Value) -> Self {
+        v.as_f64().unwrap()
+    }
+}
+impl FromValue for bool {
+    fn from_value(v: &Value) -> Self {
+        v.as_bool().unwrap()
+    }
+}
+impl FromValue for char {
+    fn from_value(v: &Value) -> Self {
+        v.as_char().unwrap()
+    }
+}
+
+pub trait FromTable: Sized {
+    #[allow(private_interfaces)]
+    fn from_table(table: &Table) -> Self;
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
 
     #[test]
     fn read_the_test_file() {
-        let _config = ParseConfig::from_file("src/test.toml".to_string());
+        #[derive(Debug)]
+        #[allow(unused)]
+        struct SomeTable {
+            key_str: String,
+            key_int: i32,
+            key_float: f64,
+            key_bool: bool,
+        }
+
+        from_table_struct!(SomeTable {
+            key_str: String,
+            key_int: i32,
+            key_float: f64,
+            key_bool: bool,
+        });
+
+        let parsed = ParseConfig::from_file("src/test.toml".to_string());
+        let first_table: SomeTable = parsed.table("first_table").unwrap();
+        let second_table: SomeTable = parsed.table("second_table").unwrap();
+        println!("{:#?}", first_table);
+        println!("{:#?}", second_table);
     }
 }
