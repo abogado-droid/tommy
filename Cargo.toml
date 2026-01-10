@@ -1,0 +1,20 @@
+[package]
+name = "tommy"
+version = "0.1.0"
+edition = "2024"
+authors = ["Simon Danielsson <contact@simondanielsson.se>"]
+license = "MIT"
+repository = "https://github.com/simon-danielsson/tommy"
+keywords = ["toml", "parser", "utility", "crate", "library" ]
+exclude = ["media/"]
+readme = true
+
+[profile.release]
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true
+
+[dependencies]
+
+
