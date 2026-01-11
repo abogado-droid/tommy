@@ -3,8 +3,8 @@
 </h1>
   
 <p align="center">
-  <em>A light-weight toml parser for easy parsing <br>
-of configuration files in Rust projects</em>
+  <em>A light-weight toml parser for <br>
+configuration files in Rust projects</em>
 </p>
   
 <p align="center">
