@@ -1,4 +1,5 @@
 use tommy::*;
+const FALLBACK_CONF: &str = include_str!("../fallback.toml");
 
 #[test]
 fn example() {
@@ -32,8 +33,11 @@ fn example() {
         controls: char,
     });
 
-    let parsed_user = ParseConfig::from_file("test.toml".to_string()).unwrap();
-    let parsed_fabk = ParseConfig::from_file("fallback.toml".to_string()).unwrap();
+    // String is assumed to be a file_path
+    // &str is assumed to be file_contents
+    let user_input: String = "test.toml".to_string();
+    let parsed_user = ParseConfig::from_file(user_input.into()).unwrap();
+    let parsed_fabk = ParseConfig::from_file(FALLBACK_CONF.into()).unwrap();
 
     /// ```
     /// # or instead of using macro

@@ -1,4 +1,3 @@
-use std::fs::File;
 use std::io::{BufRead, BufReader};
 
 #[derive(Debug, Clone)]
@@ -74,17 +73,47 @@ where
     }
 }
 
+pub enum ConfigFileInput<'a> {
+    Path(String),
+    Contents(&'a str),
+}
+
+impl<'a> From<String> for ConfigFileInput<'a> {
+    fn from(s: String) -> Self {
+        ConfigFileInput::Path(s)
+    }
+}
+
+impl<'a> From<&'a str> for ConfigFileInput<'a> {
+    fn from(s: &'a str) -> Self {
+        ConfigFileInput::Contents(s)
+    }
+}
 pub struct ParseConfig {
     table_l: Vec<Table>,
-    file_path: String,
+    file_contents: String,
 }
 
 impl ParseConfig {
-    /// Takes a directory path of type String and parses the file immediately
-    pub fn from_file(file_path: String) -> Result<Self, Box<dyn std::error::Error>> {
+    /// Takes parameter String(if path) or &str(if contents)
+    ///
+    /// # Example
+    /// ``` ignore
+    /// const FALLBACK_CONF: &str = include_str!("../fallback.toml");
+    /// let user_input: String = "user_config.toml".to_string()
+    ///
+    /// let parsed_user = ParseConfig::from_file(user_input.into()).unwrap();
+    /// let parsed_fabk = ParseConfig::from_file(FALLBACK_CONF.into()).unwrap();
+    /// ```
+    pub fn from_file(file_input: ConfigFileInput) -> Result<Self, Box<dyn std::error::Error>> {
+        let file_contents: String = match file_input {
+            ConfigFileInput::Path(path) => std::fs::read_to_string(path)?,
+            ConfigFileInput::Contents(contents) => contents.to_string(),
+        };
+
         let mut parser = Self {
             table_l: Vec::new(),
-            file_path,
+            file_contents,
         };
 
         parser.derive_tables()?;
@@ -103,8 +132,7 @@ where
     }
 
     fn derive_tables(&mut self) -> std::io::Result<()> {
-        let file = File::open(self.file_path.clone())?;
-        let reader = BufReader::new(file);
+        let reader = BufReader::new(std::io::Cursor::new(self.file_contents.as_bytes()));
 
         let mut table_l: Vec<Table> = Vec::new();
         let mut table_c: Option<Table> = None;

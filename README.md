@@ -38,6 +38,8 @@ Tommy is dumb, blunt and clunky. It's built for parsing simple configuration fil
 ``` rust
 use tommy::*;
 
+const FALLBACK_CONF: &str = include_str!("../fallback.toml");
+
 macro_rules! config_table {
     ($nme:ident { $($fld:ident : $typ:ty),* $(,)? }) => {
         #[derive(Debug)]
@@ -85,8 +87,9 @@ impl Config {
 }
 
 fn main() {
-    let parsed_user = ParseConfig::from_file("test.toml".to_string()).unwrap();
-    let parsed_fabk = ParseConfig::from_file("fallback.toml".to_string()).unwrap();
+    let user_input: String = "test.toml".to_string();
+    let parsed_user = ParseConfig::from_file(user_input.into()).unwrap();
+    let parsed_fabk = ParseConfig::from_file(FALLBACK_CONF.into()).unwrap();
 
     /// # or instead of using macro:
     /// let cursor_conf: Cursor = parsed_user
