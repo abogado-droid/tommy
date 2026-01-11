@@ -60,13 +60,13 @@ pub struct Table {
 
 #[allow(unused)]
 impl Table {
-    pub(crate) fn get(&self, key: &str) -> Option<&Value> {
+    pub fn get(&self, key: &str) -> Option<&Value> {
         self.fields
             .iter()
             .find_map(|(k, v)| if k == key { Some(v) } else { None })
     }
 
-    pub(crate) fn get_as<T>(&self) -> T
+    pub fn get_as<T>(&self) -> T
 where
         T: for<'a> From<&'a Table>,
     {
