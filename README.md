@@ -72,11 +72,20 @@ fn main() {
     let parsed_user = ParseConfig::from_file("test.toml".to_string()).unwrap();
     let parsed_fabk = ParseConfig::from_file("fallback.toml".to_string()).unwrap();
 
+    /// # or instead of using macro
+    /// let cursor_conf: Cursor = parsed_user
+    ///     .table("cursor")
+    ///     .or_else(|| parsed_fabk.table("cursor"))
+    ///     .unwrap();
     macro_rules! load_conf {
         ($var:ident : $ty:ty) => {
             let $var: $ty = parsed_user
             .table(stringify!($ty).to_lowercase().as_str())
             .or_else(|| {
+            println!(
+            "WARNING: fallback was used for table: {}",
+            stringify!($ty)
+            );
             parsed_fabk.table(stringify!($ty).to_lowercase().as_str())
             })
             .unwrap();

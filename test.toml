@@ -1,6 +1,6 @@
 # cursor config
 [cursor]
-blink = true
+# blink = true
 blink_duration = 50
 
 # window config
